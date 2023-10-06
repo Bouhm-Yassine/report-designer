@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { AddCommand } from '../../commands/add.command';
+import { CommandManager } from '../../commands/command-manager';
 
 @Component({
   selector: 'app-design-container',
@@ -7,6 +9,7 @@ import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 })
 export class DesignContainerComponent {
   reportForm: FormGroup;
+  private commandManager: CommandManager = new CommandManager(); // Create a new CommandManager
 
   constructor(private fb: FormBuilder) {
     this.reportForm = this.fb.group({
@@ -27,34 +30,45 @@ export class DesignContainerComponent {
   }
 
   addSection() {
-    this.getSections().push(this.fb.group({
+    const newSection = this.fb.group({
       name: [''],
-      titles: this.fb.array([
-        this.fb.group({
-          name: [''],
-          subtitles: this.fb.array([])
-        })
-      ])
-    }));
+      titles: this.fb.array([])
+    })
+
+    let addCommand = new AddCommand(this.getSections(), newSection);
+    this.commandManager.execute(addCommand);
   }
 
   addTitle(sectionIndex: number) {
-    const titles = this.getTitles(sectionIndex);
-    titles.push(this.fb.group({
+    const newTitle = this.fb.group({
       name: [''],
       subtitles: this.fb.array([])
-    }));
+    })
+
+    const addCommand = new AddCommand(this.getTitles(sectionIndex), newTitle);
+    this.commandManager.execute(addCommand);
   }
 
   addSubtitle(sectionIndex: number, titleIndex: number) {
-    const subtitles = this.getSubtitles(sectionIndex, titleIndex)
-    subtitles.push(this.fb.group({
+    const newSubtitle = this.fb.group({
       name: ['']
-    }));
+    })
+
+    const addCommand = new AddCommand(this.getSubtitles(sectionIndex, titleIndex), newSubtitle);
+    this.commandManager.execute(addCommand);
   }
 
   submitForm() {
     console.log('==== FORM', this.reportForm.value)
+  }
+
+
+  undo() {
+    this.commandManager.undo()
+  }
+
+  redo() {
+    this.commandManager.redo()
   }
 
 }

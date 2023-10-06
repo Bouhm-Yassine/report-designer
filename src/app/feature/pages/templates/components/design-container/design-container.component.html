@@ -1,3 +1,6 @@
+<button (click)="undo()">UNDO</button>
+<button (click)="redo()">REDO</button>
+
 <app-section
   *ngFor="let section of reportForm.value.sections"
   [title]="section.name"
