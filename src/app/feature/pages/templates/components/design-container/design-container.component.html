@@ -1,9 +1,40 @@
-<app-section *ngFor="let section of report.sections" [title]="section.name">
-  <app-title *ngFor="let title of section.titles" [name]="title.name">
-    <app-title
-      *ngFor="let subtitle of title.subtitles"
-      [name]="subtitle.name"
-      [isSubtitle]="true"
-    ></app-title>
-  </app-title>
-</app-section>
+<button (click)="submitForm()">Submit</button>
+
+<br />
+
+<button (click)="addSection()">Add Section</button>
+
+<form [formGroup]="reportForm">
+  <div formArrayName="sections">
+    <div
+      *ngFor="let section of getSections().controls; let i = index"
+      [formGroupName]="i"
+    >
+      <br />
+      <input formControlName="name" placeholder="Section Name" />
+      <button (click)="addTitle(i)">Add Title</button>
+
+      <div formArrayName="titles">
+        <div
+          *ngFor="let title of getTitles(i).controls; let j = index"
+          [formGroupName]="j"
+        >
+          <input formControlName="name" placeholder="Title Name" />
+          <button (click)="addSubtitle(i, j)">Add Subtitle</button>
+
+          <div formArrayName="subtitles">
+            <div
+              *ngFor="
+                let subtitle of getSubtitles(i, j).controls;
+                let k = index
+              "
+              [formGroupName]="k"
+            >
+              <input formControlName="name" placeholder="Subtitle Name" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
