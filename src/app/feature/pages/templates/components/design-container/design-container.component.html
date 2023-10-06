@@ -1,3 +1,16 @@
+<app-section
+  *ngFor="let section of reportForm.value.sections"
+  [title]="section.name"
+>
+  <app-title *ngFor="let title of section.titles" [name]="title.name">
+    <app-title
+      *ngFor="let subtitle of title.subtitles"
+      [name]="subtitle.name"
+      [isSubtitle]="true"
+    ></app-title>
+  </app-title>
+</app-section>
+
 <button (click)="submitForm()">Submit</button>
 
 <br />
