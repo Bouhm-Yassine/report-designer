@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AddCommand } from '../../commands/add.command';
 import { CommandManager } from '../../commands/command-manager';
 
@@ -101,7 +101,7 @@ export class DesignContainerComponent {
 
   addSection() {
     const newSection = this.fb.group({
-      name: [''],
+      name: ['', Validators.required],
       titles: this.fb.array([])
     })
 
@@ -111,7 +111,7 @@ export class DesignContainerComponent {
 
   addTitle(sectionIndex: number) {
     const newTitle = this.fb.group({
-      name: [''],
+      name: ['', Validators.required],
       subtitles: this.fb.array([])
     })
 
@@ -121,7 +121,7 @@ export class DesignContainerComponent {
 
   addSubtitle(sectionIndex: number, titleIndex: number) {
     const newSubtitle = this.fb.group({
-      name: ['']
+      name: ['', Validators.required]
     })
 
     const addCommand = new AddCommand(this.getSubtitles(sectionIndex, titleIndex), newSubtitle);
