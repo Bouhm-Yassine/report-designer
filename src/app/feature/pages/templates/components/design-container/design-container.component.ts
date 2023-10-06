@@ -6,10 +6,13 @@ import { CommandManager } from '../../commands/command-manager';
 @Component({
   selector: 'app-design-container',
   templateUrl: './design-container.component.html',
+  styleUrls: ['./design-container.component.scss']
 })
 export class DesignContainerComponent {
   reportForm!: FormGroup;
   private commandManager: CommandManager = new CommandManager(); // Create a new CommandManager
+  selectedSectionIndex!: number;
+
 
   apiReport = {
     "sections": [
@@ -139,6 +142,11 @@ export class DesignContainerComponent {
 
   redo() {
     this.commandManager.redo()
+  }
+
+  selectSection(index: number) {
+    console.log('========== SELECTE SECTION', index)
+    this.selectedSectionIndex = index;
   }
 
 }
