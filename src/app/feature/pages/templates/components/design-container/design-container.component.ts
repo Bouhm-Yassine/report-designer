@@ -8,13 +8,83 @@ import { CommandManager } from '../../commands/command-manager';
   templateUrl: './design-container.component.html',
 })
 export class DesignContainerComponent {
-  reportForm: FormGroup;
+  reportForm!: FormGroup;
   private commandManager: CommandManager = new CommandManager(); // Create a new CommandManager
 
+  apiReport = {
+    "sections": [
+      {
+        "name": "S1",
+        "titles": [
+          {
+            "name": "T1",
+            "subtitles": [
+              {
+                "name": "ST1"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "S2",
+        "titles": [
+          {
+            "name": "T2",
+            "subtitles": [
+              {
+                "name": "ST2"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+
   constructor(private fb: FormBuilder) {
+    this.buildReportForm()
+    this.patchReportForm()
+  }
+
+  buildReportForm() {
     this.reportForm = this.fb.group({
       sections: this.fb.array([])
     });
+  }
+
+  patchReportForm() {
+    const sectionsArray = this.reportForm.get('sections') as FormArray;
+
+    for (const section of this.apiReport.sections) {
+      const newSection = this.fb.group({
+        name: section.name,
+        titles: this.fb.array([])
+      });
+
+      const titlesArray = newSection.get('titles') as FormArray;
+
+      for (const title of section.titles) {
+        const newTitle = this.fb.group({
+          name: title.name,
+          subtitles: this.fb.array([])
+        });
+
+        const subtitlesArray = newTitle.get('subtitles') as FormArray;
+
+        for (const subtitle of title.subtitles) {
+          const newSubtitle = this.fb.group({
+            name: subtitle.name
+          });
+
+          subtitlesArray.push(newSubtitle);
+        }
+
+        titlesArray.push(newTitle);
+      }
+
+      sectionsArray.push(newSection);
+    }
   }
 
   getSections(): FormArray {
