@@ -6,5 +6,20 @@ import { Component } from '@angular/core';
   styleUrls: ['./design-container.component.scss']
 })
 export class DesignContainerComponent {
-
+  report = {
+    sections: [
+      {
+        name: 'Section 1',
+        titles: [
+          {
+            name: 'Title 1.1',
+            subtitles: [
+              { name: 'Subtitle 1.1.1' },
+              { name: 'Subtitle 1.1.2' }
+            ]
+          }
+        ]
+      }
+    ]
+  };
 }

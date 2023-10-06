@@ -1,1 +1,9 @@
-<p>design-container works!</p>
+<app-section *ngFor="let section of report.sections" [title]="section.name">
+  <app-title *ngFor="let title of section.titles" [name]="title.name">
+    <app-title
+      *ngFor="let subtitle of title.subtitles"
+      [name]="subtitle.name"
+      [isSubtitle]="true"
+    ></app-title>
+  </app-title>
+</app-section>
